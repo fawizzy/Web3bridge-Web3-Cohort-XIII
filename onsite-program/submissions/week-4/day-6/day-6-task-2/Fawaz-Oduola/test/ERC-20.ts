@@ -99,9 +99,8 @@ describe("ERC-20 Token", function () {
         expect(await token.balanceOf(recipient.address)).to.be.equal(3000)
 
     })
-  })
 
-  it("revert if spender is not allowed", async function () {
+      it("revert if spender is not allowed", async function () {
         const {token, owner,spender,  recipient} = await loadFixture(deployERC20)        
         
       await  expect(token.connect(spender).transferFrom(owner.address, recipient.address, 3000)).to.be.revertedWithCustomError(token, 'UNAUTHORIZED')
@@ -121,5 +120,8 @@ describe("ERC-20 Token", function () {
         
 
     })
+  })
+
+
   
 });

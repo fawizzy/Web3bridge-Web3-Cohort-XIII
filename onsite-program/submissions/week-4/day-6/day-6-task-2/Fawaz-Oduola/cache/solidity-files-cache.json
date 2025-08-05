@@ -37,42 +37,6 @@
         "IBADAN_20",
         "IERC20"
       ]
-    },
-    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Fawaz-Oduola/contracts/Lock.sol": {
-      "lastModificationDate": 1754340662660,
-      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
-      "sourceName": "contracts/Lock.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.28"
-      ],
-      "artifacts": [
-        "Lock"
-      ]
     }
   }
 }
