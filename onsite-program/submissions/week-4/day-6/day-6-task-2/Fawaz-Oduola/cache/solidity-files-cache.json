@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Fawaz-Oduola/contracts/ERC-20.sol": {
-      "lastModificationDate": 1754354787580,
+      "lastModificationDate": 1754402087690,
       "contentHash": "14853c628c6b743608459d38740be580",
       "sourceName": "contracts/ERC-20.sol",
       "solcConfig": {
@@ -26,6 +26,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
