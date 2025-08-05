@@ -72,17 +72,17 @@ contract IBADAN_20 is IERC20{
     }
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
-        if (_allowance[_from][_to]  == 0){
+        if (_allowance[_from][msg.sender]  == 0){
             revert UNAUTHORIZED("unauthorised to send from this address");
         }
 
-        if (_allowance[_from][_to] < _value) {
+        if (_allowance[_from][msg.sender] < _value) {
             revert ExceedsLimit(_allowance[_from][_to], _value);
         }
 
        _balanceOf[_from] = _balanceOf[_from] - _value;
        _balanceOf[_to] = _balanceOf[_to] + _value;
-       _allowance[_from][_to] = _allowance[_from][_to] - _value;
+       _allowance[_from][msg.sender] = _allowance[_from][msg.sender] - _value;
        emit Transfer(_from, _to, _value);
        return true;
     }
