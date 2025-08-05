@@ -11,6 +11,6 @@ interface IEmployeeManagement {
         EmployeePosition position;
         Status status;
     }
-    function addEmployee(string memory _name, address _address, EmployeePosition _position, uint256 _salary) external;
+    function addEmployee(string memory _name, address _address, EmployeePosition _position, uint256 _salary) external returns(bool);
     function payEmployee(address _address) external;
 }

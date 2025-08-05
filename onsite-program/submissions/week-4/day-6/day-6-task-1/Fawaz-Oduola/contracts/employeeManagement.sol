@@ -12,10 +12,11 @@ contract EmployeeManagement is IEmployeeManagement {
     receive() external payable { }
 
 
-    function addEmployee(string memory _name, address _address, EmployeePosition _position, uint256 _salary) external {
+    function addEmployee(string memory _name, address _address, EmployeePosition _position, uint256 _salary) external returns(bool){
         Employee memory newEmployee = Employee(_name, _address, _salary, _position, Status.EMPLOYED);
         employees.push(newEmployee);
-        addressToEmployee[_address] = newEmployee;   
+        addressToEmployee[_address] = newEmployee;
+        return true; 
     }
 
 
