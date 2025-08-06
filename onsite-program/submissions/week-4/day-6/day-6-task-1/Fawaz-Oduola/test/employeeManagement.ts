@@ -67,6 +67,22 @@ describe("EmployeeManagement", function () {
       
     })
 
+    it("Should fund contract with fundContract function", async function () {
+      const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
+      const CA  = await employeeManagement.getAddress()
+
+      const balance = await hre.ethers.provider.getBalance(owner.address);
+
+      await employeeManagement.fundContract({value:100000});
+
+     
+
+      expect( await employeeManagement.fundContract({value:100000})).to.changeEtherBalance([owner.address, CA],[-100000, 100000])
+      
+    })
+
+
+
     it("should pay employee", async function () {
       const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
       const CA  = await employeeManagement.getAddress();

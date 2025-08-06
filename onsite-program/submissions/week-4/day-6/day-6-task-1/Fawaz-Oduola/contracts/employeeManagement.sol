@@ -32,9 +32,7 @@ contract EmployeeManagement is IEmployeeManagement {
         return addressToEmployee[_address];
     }
 
-    function convertEthToWei(uint256 _eth) internal pure returns(uint256){
-        return _eth * 1e18;
-    }
+
 
     function fundContract() external payable {}
 
