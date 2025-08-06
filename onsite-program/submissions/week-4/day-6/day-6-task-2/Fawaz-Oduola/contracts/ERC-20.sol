@@ -18,9 +18,9 @@ interface IERC20 {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
 
-contract IBADAN_20 is IERC20{
-    string public constant NAME = "IBADAN";
-    string public SYMBOL = "IBD";
+contract CHILD_TOKEN is IERC20{
+    string public NAME;
+    string public SYMBOL;
     uint8 public DECIMALS = 16;
     address public immutable owner;
 
@@ -31,7 +31,10 @@ contract IBADAN_20 is IERC20{
     mapping (address=>uint256) _balanceOf;
     mapping (address=> mapping (address => uint256)) public _allowance;
 
-    constructor(){
+    constructor(string memory _name, string memory _symbol){
+
+        NAME = _name;
+        SYMBOL = _symbol;
 
         _totalSupply = 1000000000*10**DECIMALS;
         _balanceOf[msg.sender] = _totalSupply;
@@ -39,7 +42,7 @@ contract IBADAN_20 is IERC20{
     }
 
 
-    function name() external pure returns (string memory){
+    function name() external view returns (string memory){
         return NAME;
     }
 

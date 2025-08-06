@@ -13,11 +13,13 @@ describe("ERC-20 Token", function () {
     // Contracts are deployed using the first signer/account by default
     const [owner, spender, recipient] = await hre.ethers.getSigners();
 
-    const TOKEN = await hre.ethers.getContractFactory("IBADAN_20");
-    const token = await TOKEN.deploy();
+    const TOKEN = await hre.ethers.getContractFactory("CHILD_TOKEN");
+    const FACTORY =  await hre.ethers.getContractFactory("ERC_20_FACTORY")
+    const token = await TOKEN.deploy("IBADAN", "IBD");
+    const factory = await FACTORY.deploy();
 
    
-    return { token, owner, spender, recipient };
+    return { token, factory, owner, spender, recipient };
   }
 
   describe("Deployment", function () {
@@ -40,6 +42,28 @@ describe("ERC-20 Token", function () {
       const { token } = await loadFixture(deployERC20);
       expect(await token.totalSupply()).to.equal(10000000000000000000000000n);
     });
+
+    it ("should deploy the child contract", async function(){
+      const { factory, token } = await loadFixture(deployERC20);
+      await factory.create_erc_20_contract("NEW_TOKEN", "NT");
+      expect(await factory.name()).to.be.equal("NEW_TOKEN")
+    })
+
+   it("should get the contract address of the child contract", async function () {
+  const { factory } = await loadFixture(deployERC20);
+
+  const tx = await factory.create_erc_20_contract("NEW_TOKEN", "NT");
+  await tx.wait();
+
+  const childAddress = await factory.getContractAddress();
+
+  expect(childAddress).to.properAddress;
+
+  const childToken = await hre.ethers.getContractAt("CHILD_TOKEN", childAddress);
+  expect(await childToken.symbol()).to.equal("NT");
+});
+
+
   });
 
   describe("Balance", function () {

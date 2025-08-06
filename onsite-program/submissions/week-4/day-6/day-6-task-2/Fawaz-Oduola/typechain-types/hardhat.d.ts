@@ -14,44 +14,62 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "IBADAN_20",
+      name: "CHILD_TOKEN",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IBADAN_20__factory>;
+    ): Promise<Contracts.CHILD_TOKEN__factory>;
     getContractFactory(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "ERC_20_FACTORY",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC_20_FACTORY__factory>;
 
     getContractAt(
-      name: "IBADAN_20",
+      name: "CHILD_TOKEN",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IBADAN_20>;
+    ): Promise<Contracts.CHILD_TOKEN>;
     getContractAt(
       name: "IERC20",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "ERC_20_FACTORY",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC_20_FACTORY>;
 
     deployContract(
-      name: "IBADAN_20",
+      name: "CHILD_TOKEN",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IBADAN_20>;
+    ): Promise<Contracts.CHILD_TOKEN>;
     deployContract(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
+    deployContract(
+      name: "ERC_20_FACTORY",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ERC_20_FACTORY>;
 
     deployContract(
-      name: "IBADAN_20",
+      name: "CHILD_TOKEN",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IBADAN_20>;
+    ): Promise<Contracts.CHILD_TOKEN>;
     deployContract(
       name: "IERC20",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
+    deployContract(
+      name: "ERC_20_FACTORY",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ERC_20_FACTORY>;
 
     // default types
     getContractFactory(

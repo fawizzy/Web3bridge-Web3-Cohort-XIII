@@ -5,7 +5,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 
 const IBADAN_20Module = buildModule("IBADAN_20Module", (m) => {
-   const IBADAN_20 = m.contract("IBADAN_20");
+   const IBADAN_20 = m.contract("ERC_20_FACTORY");
 
   return { IBADAN_20 };
 });
