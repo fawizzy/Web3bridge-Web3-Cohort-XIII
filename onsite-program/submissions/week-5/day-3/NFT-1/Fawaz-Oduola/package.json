@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
     "abbrev": "^1.0.9",
     "abitype": "^1.0.8",
     "acorn": "^8.15.0",
