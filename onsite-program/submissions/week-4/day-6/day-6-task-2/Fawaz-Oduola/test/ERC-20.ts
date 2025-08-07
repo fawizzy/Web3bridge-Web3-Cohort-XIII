@@ -5,6 +5,7 @@ import {
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
+import { ethers } from "ethers";
 
 describe("ERC-20 Token", function () {
  
@@ -15,7 +16,7 @@ describe("ERC-20 Token", function () {
 
     const TOKEN = await hre.ethers.getContractFactory("CHILD_TOKEN");
     const FACTORY =  await hre.ethers.getContractFactory("ERC_20_FACTORY")
-    const token = await TOKEN.deploy("IBADAN", "IBD");
+    const token = await TOKEN.deploy("IBADAN", "IBD", owner.address);
     const factory = await FACTORY.deploy();
 
    
@@ -25,6 +26,7 @@ describe("ERC-20 Token", function () {
   describe("Deployment", function () {
     it("Should get the right token name", async function () {
       const { token } = await loadFixture(deployERC20);
+      console.log(token.name())
       expect(await token.name()).to.equal("IBADAN");
     });
 
@@ -46,7 +48,7 @@ describe("ERC-20 Token", function () {
     it ("should deploy the child contract", async function(){
       const { factory, token } = await loadFixture(deployERC20);
       await factory.create_erc_20_contract("NEW_TOKEN", "NT");
-      expect(await factory.name()).to.be.equal("NEW_TOKEN")
+      expect(await factory.name(0)).to.be.equal("NEW_TOKEN")
     })
 
    it("should get the contract address of the child contract", async function () {
@@ -78,6 +80,18 @@ describe("ERC-20 Token", function () {
         expect(await token.balanceOf(spender.address)).to.equal(0n)
     })
 
+    it("For the child contract balance of the EOA should be equal to the total supply on deployment", async function () {
+        const {token, factory, owner} =  await loadFixture(deployERC20);
+        await factory.create_erc_20_contract("NEW_TOKEN", "NWT");
+        expect(await factory.balanceOf(owner,0)).to.be.equal(10000000000000000000000000n);
+    })
+
+    it("For the child contract balance of the EOA should be zero if no token or number token is zero", async function () {
+        const {token, factory, owner} =  await loadFixture(deployERC20);
+        await factory.create_erc_20_contract("NEW_TOKEN", "NWT");
+        expect(await factory.balanceOf(owner,0)).to.be.equal(10000000000000000000000000n);
+    })
+
 
   });
 
@@ -93,6 +107,16 @@ describe("ERC-20 Token", function () {
         await token.transfer(recipient.address, 5000);
         expect(await token.balanceOf(recipient.address)).to.be.equal(5000)
     })
+
+    it("should send token to another address", async function () {
+        const {factory, owner,  recipient} = await loadFixture(deployERC20)
+        await factory.create_erc_20_contract("NEW_TOKEN", "NWT");
+        console.log(await factory.balanceOf(owner.address, 0))
+        await factory.transfer(recipient.address, 5000, 0);
+        expect(await factory.balanceOf(recipient.address,0)).to.be.equal(5000)
+    })
+
+    
     
   })
 

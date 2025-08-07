@@ -31,13 +31,13 @@ contract CHILD_TOKEN is IERC20{
     mapping (address=>uint256) _balanceOf;
     mapping (address=> mapping (address => uint256)) public _allowance;
 
-    constructor(string memory _name, string memory _symbol){
+    constructor(string memory _name, string memory _symbol, address _owner){
 
         NAME = _name;
         SYMBOL = _symbol;
-
+        owner = _owner;
         _totalSupply = 1000000000*10**DECIMALS;
-        _balanceOf[msg.sender] = _totalSupply;
+        _balanceOf[owner] = _totalSupply;
 
     }
 

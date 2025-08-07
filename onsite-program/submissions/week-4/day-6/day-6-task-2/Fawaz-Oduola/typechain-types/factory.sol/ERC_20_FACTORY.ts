@@ -24,40 +24,73 @@ import type {
 export interface ERC_20_FACTORYInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "allowance"
+      | "approve"
       | "balanceOf"
       | "create_erc_20_contract"
       | "decimals"
       | "erc_20_contracts"
+      | "getAllContractAddresses"
       | "getContractAddress"
       | "name"
       | "symbol"
       | "totalSupply"
+      | "transfer"
+      | "transferFrom"
   ): FunctionFragment;
 
   encodeFunctionData(
+    functionFragment: "allowance",
+    values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "approve",
+    values: [AddressLike, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "balanceOf",
-    values: [AddressLike]
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "create_erc_20_contract",
     values: [string, string]
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "decimals",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "erc_20_contracts",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "getAllContractAddresses",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getContractAddress",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(functionFragment: "name", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "symbol",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
-    values?: undefined
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transfer",
+    values: [AddressLike, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferFrom",
+    values: [AddressLike, AddressLike, BigNumberish, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "create_erc_20_contract",
@@ -69,6 +102,10 @@ export interface ERC_20_FACTORYInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getAllContractAddresses",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getContractAddress",
     data: BytesLike
   ): Result;
@@ -76,6 +113,11 @@ export interface ERC_20_FACTORYInterface extends Interface {
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
 }
@@ -123,7 +165,23 @@ export interface ERC_20_FACTORY extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  balanceOf: TypedContractMethod<[_owner: AddressLike], [bigint], "view">;
+  allowance: TypedContractMethod<
+    [_owner: AddressLike, _spender: AddressLike, _index: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
+  approve: TypedContractMethod<
+    [_spender: AddressLike, _value: BigNumberish, _index: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
+  balanceOf: TypedContractMethod<
+    [_owner: AddressLike, _index: BigNumberish],
+    [bigint],
+    "view"
+  >;
 
   create_erc_20_contract: TypedContractMethod<
     [_name: string, _symbol: string],
@@ -131,25 +189,62 @@ export interface ERC_20_FACTORY extends BaseContract {
     "nonpayable"
   >;
 
-  decimals: TypedContractMethod<[], [bigint], "view">;
+  decimals: TypedContractMethod<[_index: BigNumberish], [bigint], "view">;
 
   erc_20_contracts: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
 
+  getAllContractAddresses: TypedContractMethod<[], [string[]], "view">;
+
   getContractAddress: TypedContractMethod<[], [string], "view">;
 
-  name: TypedContractMethod<[], [string], "view">;
+  name: TypedContractMethod<[_index: BigNumberish], [string], "view">;
 
-  symbol: TypedContractMethod<[], [string], "view">;
+  symbol: TypedContractMethod<[_index: BigNumberish], [string], "view">;
 
-  totalSupply: TypedContractMethod<[], [bigint], "view">;
+  totalSupply: TypedContractMethod<[_index: BigNumberish], [bigint], "view">;
+
+  transfer: TypedContractMethod<
+    [_to: AddressLike, _value: BigNumberish, _index: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
+  transferFrom: TypedContractMethod<
+    [
+      _from: AddressLike,
+      _to: AddressLike,
+      _value: BigNumberish,
+      _index: BigNumberish
+    ],
+    [boolean],
+    "nonpayable"
+  >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
+    nameOrSignature: "allowance"
+  ): TypedContractMethod<
+    [_owner: AddressLike, _spender: AddressLike, _index: BigNumberish],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "approve"
+  ): TypedContractMethod<
+    [_spender: AddressLike, _value: BigNumberish, _index: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "balanceOf"
-  ): TypedContractMethod<[_owner: AddressLike], [bigint], "view">;
+  ): TypedContractMethod<
+    [_owner: AddressLike, _index: BigNumberish],
+    [bigint],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "create_erc_20_contract"
   ): TypedContractMethod<
@@ -159,22 +254,44 @@ export interface ERC_20_FACTORY extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "decimals"
-  ): TypedContractMethod<[], [bigint], "view">;
+  ): TypedContractMethod<[_index: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "erc_20_contracts"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "getAllContractAddresses"
+  ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
     nameOrSignature: "getContractAddress"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "name"
-  ): TypedContractMethod<[], [string], "view">;
+  ): TypedContractMethod<[_index: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "symbol"
-  ): TypedContractMethod<[], [string], "view">;
+  ): TypedContractMethod<[_index: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "totalSupply"
-  ): TypedContractMethod<[], [bigint], "view">;
+  ): TypedContractMethod<[_index: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "transfer"
+  ): TypedContractMethod<
+    [_to: AddressLike, _value: BigNumberish, _index: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "transferFrom"
+  ): TypedContractMethod<
+    [
+      _from: AddressLike,
+      _to: AddressLike,
+      _value: BigNumberish,
+      _index: BigNumberish
+    ],
+    [boolean],
+    "nonpayable"
+  >;
 
   filters: {};
 }
