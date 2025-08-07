@@ -17,13 +17,15 @@ describe("EmployeeManagement", function () {
     const [owner, employee1, employee2 ] = await hre.ethers.getSigners();
 
     const EmployeeManagement = await hre.ethers.getContractFactory("EmployeeManagement");
+    const Factory = await hre.ethers.getContractFactory("Factory");
     const employeeManagement = await EmployeeManagement.deploy();
+    const factory = await Factory.deploy();
 
-    return { employeeManagement, owner, employee1, employee2 };
+    return { employeeManagement,factory, owner, employee1, employee2 };
   }
 
   describe("Employee Management", function () {
-    it("Should add the emloyee", async function () {
+    it("Should add the employee", async function () {
       const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
       const employeeName = "Ayo";
       const employeeAddress = employee1.address;
@@ -37,6 +39,21 @@ describe("EmployeeManagement", function () {
       expect((await employeeManagement.getEmployee(employeeAddress)).salary).to.be.equal(employeeSalary);
     });
 
+    it("Should add the employee in the child contract", async function () {
+      const { employeeManagement,factory, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
+      const employeeName = "Ayo";
+      const employeeAddress = employee1.address;
+      const employeePosition = 0;
+      const employeeSalary = 100;
+      await factory.createFactory();
+      await factory.addEmployee(employeeName, employee1.address, employeePosition, employeeSalary)
+      expect(await factory.addEmployee.staticCall(employeeName, employee1.address, employeePosition, employeeSalary)).to.be.true;
+      expect((await factory.getEmployee(employeeAddress)).name).to.be.equal(employeeName);
+      expect((await factory.getEmployee(employeeAddress))._address).to.be.equal(employeeAddress);
+      expect((await factory.getEmployee(employeeAddress)).position).to.be.equal(employeePosition);
+      expect((await factory.getEmployee(employeeAddress)).salary).to.be.equal(employeeSalary);
+    });
+
     it("Should get employee by address", async function(){
       const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
       const employeeName = "Ayo";
@@ -48,10 +65,22 @@ describe("EmployeeManagement", function () {
       expect((await employeeManagement.getEmployee(employeeAddress))._address).to.be.equal(employeeAddress)
     })
 
+    it("Should get employee by address for child contract", async function(){
+      const { factory, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
+      const employeeName = "Ayo";
+      const employeeAddress = employee1.address;
+      const employeePosition = 0;
+      const employeeSalary = 100;
+      await factory.createFactory();
+      await factory.addEmployee(employeeName, employee1.address, employeePosition, employeeSalary);
+
+      expect((await factory.getEmployee(employeeAddress))._address).to.be.equal(employeeAddress)
+    })
+
 
     it("Should fund contract", async function () {
-      const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
-      const CA  = await employeeManagement.getAddress()
+      const { factory, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
+      const CA  = await factory.getAddress()
 
       const balance = await hre.ethers.provider.getBalance(owner.address);
 
