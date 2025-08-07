@@ -45,7 +45,7 @@ describe("EmployeeManagement", function () {
       const employeeAddress = employee1.address;
       const employeePosition = 0;
       const employeeSalary = 100;
-      await factory.createFactory();
+      await factory.createEmployeeManagementContract();
       await factory.addEmployee(employeeName, employee1.address, employeePosition, employeeSalary)
       expect(await factory.addEmployee.staticCall(employeeName, employee1.address, employeePosition, employeeSalary)).to.be.true;
       expect((await factory.getEmployee(employeeAddress)).name).to.be.equal(employeeName);
@@ -71,7 +71,7 @@ describe("EmployeeManagement", function () {
       const employeeAddress = employee1.address;
       const employeePosition = 0;
       const employeeSalary = 100;
-      await factory.createFactory();
+      await factory.createEmployeeManagementContract();
       await factory.addEmployee(employeeName, employee1.address, employeePosition, employeeSalary);
 
       expect((await factory.getEmployee(employeeAddress))._address).to.be.equal(employeeAddress)
@@ -97,16 +97,30 @@ describe("EmployeeManagement", function () {
     })
 
     it("Should fund contract with fundContract function", async function () {
-      const { employeeManagement, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
-      const CA  = await employeeManagement.getAddress()
+      const { factory, owner, employee1, employee2 } = await loadFixture(deployEmployeeManagement);
+      
+      await factory.createEmployeeManagementContract()
+      const CA  = await factory.getAddress()
+      const childAddress = await factory.getContractAddress()
+      const funds = 10000;
+      let initialChildAddressBalance = await hre.ethers.provider.getBalance(childAddress);
+
+      console.log(CA, childAddress);
+
 
       const balance = await hre.ethers.provider.getBalance(owner.address);
 
-      await employeeManagement.fundContract({value:100000});
+      
 
+      await factory.fundContract({value:funds});
+
+      const currentChildBalance = await hre.ethers.provider.getBalance(childAddress);
+
+
+      
      
 
-      expect( await employeeManagement.fundContract({value:100000})).to.changeEtherBalance([owner.address, CA],[-100000, 100000])
+      expect(currentChildBalance - initialChildAddressBalance ).to.be.equal(funds)
       
     })
 
